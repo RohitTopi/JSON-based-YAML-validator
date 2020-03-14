@@ -1,0 +1,215 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "title": "The task descriptor schema",
+    "description": "Schema for validating information required to launch and control a single task",
+    "required": [
+        "name",
+        "control",
+        "wants",
+        "bind",
+        "command"
+    ],
+    "properties": {
+        "name": {
+            "$id": "#/properties/name",
+            "type": "string",
+            "title": "The Name Schema",
+            "description": "Schema for the name of the task",
+            "default": "",
+            "examples": [
+                "Dispatcher"
+            ]
+        },
+        "control": {
+            "$id": "#/properties/control",
+            "type": "object",
+            "title": "The Control Schema",
+            "description": "specifies control schema",
+            "default": {},
+            "examples": [
+                {
+                    "mode": "fairmq"
+                }
+            ],
+            "required": [
+                "mode"
+            ],
+            "properties": {
+                "mode": {
+                    "$id": "#/properties/control/properties/mode",
+                    "type": "string",
+                    "title": "The Mode Schema",
+                    "description": "Schema for the specification of control mode instance",
+                    "default": "",
+                    "examples": [
+                        "fairmq"
+                    ],
+                    "enum": ["fairmq", "basic", "direct"]
+                }
+            }
+        },
+        "wants": {
+            "$id": "#/properties/wants",
+            "type": "object",
+            "title": "The Wants Schema",
+            "description": "Schema for the resources neede by this task",
+            "default": {},
+            "examples": [
+                {
+                    "cpu": 0.15,
+                    "memory": 128.0
+                }
+            ],
+            "required": [
+                "cpu",
+                "memory"
+            ],
+            "properties": {
+                "cpu": {
+                    "$id": "#/properties/wants/properties/cpu",
+                    "type": "number",
+                    "title": "The Cpu Schema",
+                    "description": "Schema for the specifying the CPU time required by this task",
+                    "default": 0,
+                    "examples": [
+                        0.15
+                    ]
+                },
+                "memory": {
+                    "$id": "#/properties/wants/properties/memory",
+                    "type": "number",
+                    "title": "The Memory Schema",
+                    "description": "Schema for the amount of memory required by this task",
+                    "default": 0,
+                    "examples": [
+                        128
+                    ]
+                }
+            }
+        },
+        "bind": {
+            "$id": "#/properties/bind",
+            "type": "array",
+            "title": "The Bind Schema",
+            "description": "Schema for the information about the operation on bind",
+            "default": [],
+            "items": {
+                "$id": "#/properties/bind/items",
+                "type": "object",
+                "title": "The Items Schema",
+                "description": "Schema for the list of items to bind",
+                "default": {},
+                "examples": [
+                    {
+                        "type": "push",
+                        "name": "from_Dispatcher_to_QC-TASK-RUNNER-daqTask"
+                    }
+                ],
+                "required": [
+                    "name",
+                    "type"
+                ],
+                "properties": {
+                    "name": {
+                        "$id": "#/properties/bind/items/properties/name",
+                        "type": "string",
+                        "title": "The Name Schema",
+                        "description": "Schema for the name of the item",
+                        "default": "",
+                        "examples": [
+                            "from_Dispatcher_to_QC-TASK-RUNNER-daqTask"
+                        ]
+                    },
+                    "type": {
+                        "$id": "#/properties/bind/items/properties/type",
+                        "type": "string",
+                        "title": "The Type Schema",
+                        "description": "Schema for the type of the operation",
+                        "examples": [
+                            "push"
+                        ],
+                        "enum":["pub", "sub", "push", "pull"]
+                    }
+                }
+            }
+        },
+        "command": {
+            "$id": "#/properties/command",
+            "type": "object",
+            "title": "The Command Schema",
+            "description": "Schema for the command for this task",
+            "default": {},
+            "examples": [
+                {
+                    "value": "source /etc/profile.d/modules.sh && MODULEPATH=/opt/alisw/el7/modulefiles module load QualityControl && MODULEPATH=/opt/alisw/el7/modulefiles module load Control-OCCPlugin && MODULEPATH=/opt/alisw/el7/modulefiles module list && o2-qc-run-readout -b | o2-qc-run-qc",
+                    "arguments": [
+                        "-b",
+                        "--monitoring-backend",
+                        "no-op://",
+                        "--id",
+                        "Dispatcher",
+                        "--log-color",
+                        "false",
+                        "--config",
+                        "json:///etc/flp.d/qc/readout.json"
+                    ],
+                    "shell": true
+                }
+            ],
+            "required": [
+                "shell",
+                "value",
+                "arguments"
+            ],
+            "properties": {
+                "shell": {
+                    "$id": "#/properties/command/properties/shell",
+                    "type": "boolean",
+                    "title": "The Shell Schema",
+                    "description": "Schema to specify whether the command is a shell command",
+                    "default": false,
+                    "examples": [
+                        true
+                    ]
+                },
+                "value": {
+                    "$id": "#/properties/command/properties/value",
+                    "type": "string",
+                    "title": "The Value Schema",
+                    "description": "Schema for specification of the command",
+                    "default": "",
+                    "examples": [
+                        "source /etc/profile.d/modules.sh && MODULEPATH=/opt/alisw/el7/modulefiles module load QualityControl && MODULEPATH=/opt/alisw/el7/modulefiles module load Control-OCCPlugin && MODULEPATH=/opt/alisw/el7/modulefiles module list && o2-qc-run-readout -b | o2-qc-run-qc"
+                    ]
+                },
+                "arguments": {
+                    "$id": "#/properties/command/properties/arguments",
+                    "type": "array",
+                    "title": "The Arguments Schema",
+                    "description": "Schema for the specification the argument list for the command",
+                    "default": [],
+                    "items": {
+                        "$id": "#/properties/command/properties/arguments/items",
+                        "type": "string",
+                        "title": "The Items Schema",
+                        "description": "Each of the item here is an argument for the command",
+                        "default": "",
+                        "examples": [
+                            "-b",
+                            "--monitoring-backend",
+                            "no-op://",
+                            "--id",
+                            "Dispatcher",
+                            "--log-color",
+                            "false",
+                            "--config",
+                            "json:///etc/flp.d/qc/readout.json"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}
