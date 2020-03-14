@@ -19,7 +19,7 @@ func check(e error) {
 func getDirName() string{
     // get the current src location, relative to which other file paths will be obtained
     // only the directory path is required
-    filename, pathErr := filepath.Abs("./source.go")
+    filename, pathErr := filepath.Abs("./main.go")
     check(pathErr)
     return filepath.Dir(filename)
 }
